@@ -33,6 +33,9 @@ def load_data(api_key, BuildingList, All_Building_Names):
     with open(get_data_path(BuildingList), 'w') as f:
         jdata = {}
         for count, i in enumerate(new_buildings):
+             # get raw data
+            #raw = get_raw_coordinate(api_key,i)
+
             # get the coordinates
             (lat, lng) = get_coordinate(api_key, i)
 
@@ -70,12 +73,25 @@ def get_coordinate(api_key, bldg):
         'geometry']['location']['lng']
 
 
-def create_distance_matrix(api_key, BuildingList, Distance_Matrix):
+def get_raw_coordinate(api_key, bldg):
+    """
+    Use googlemaps api to get the coordinate of each building
+    :param api_key: the api key for google api
+    :param bldg: building name at UVa
+    :return: [lattitude,longitutude]
+    """
+    gm = googlemaps.Client(key=api_key)
+    geocode_result = gm.geocode('{},UVA'.format(bldg))[0]
+    return geocode_result
+
+
+def create_distance_matrix(api_key, BuildingList, Distance_Matrix,Distance_Matrix_raw):
 
     with open(get_data_path(BuildingList), "r") as f:
         data = json.load(f)
         keys = list(data.keys())
-        jdata2 = {}
+        jdata2 = {} # get the distance info
+        jdata3 = {} # get the raw info
         count = 0
 
         for i in range(len(keys)):
@@ -101,7 +117,9 @@ def create_distance_matrix(api_key, BuildingList, Distance_Matrix):
                     'distance']['value']
 
                 # concatonate the building names as key and use duration and distance as value
-                jdata2[org_name + "-" + dest_name] = [duration, distance]
+                jdata2[org_name + "|" + dest_name] = [duration, distance]
+
+                jdata3[org_name + "|" + dest_name] = distance_result
 
                 count += 1
                 print(duration, distance)
@@ -110,6 +128,8 @@ def create_distance_matrix(api_key, BuildingList, Distance_Matrix):
     with open(get_data_path(Distance_Matrix), "w") as f:
         json.dump(jdata2, f)
 
+    with open(get_data_path(Distance_Matrix_raw),'w') as f:
+        json.dump(jdata3,f)
     print('success')
 
 
@@ -118,7 +138,8 @@ if __name__ == "__main__":
     All_Building_Names = "All_Building_Names.json"
     BuildingList = 'BuildingList.json'
     Distance_Matrix = "Distance_Matrix.json"
-    create_distance_matrix(api_key, BuildingList, Distance_Matrix)
+    Distance_Matrix_raw = "Distance_Matrix_raw.json"
+    create_distance_matrix(api_key, BuildingList, Distance_Matrix,Distance_Matrix_raw)
 
     # test
     # a = get_coordinate(api_key,"nuclear reactor")
