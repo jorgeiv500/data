@@ -134,7 +134,7 @@ def create_distance_matrix(api_key, BuildingList, Distance_Matrix,Distance_Matri
 
 
 if __name__ == "__main__":
-    api_key = ''
+    api_key = 'AIzaSyAB7V8GGSxwkvmMgYFGkFx0s3cCSM0YHC0'
     All_Building_Names = "All_Building_Names.json"
     BuildingList = 'BuildingList.json'
     Distance_Matrix = "Distance_Matrix.json"
