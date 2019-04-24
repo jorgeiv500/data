@@ -32,15 +32,10 @@ def changeMapping():
             index2 = k.index(second)
 
             # save the data to the 2d array: bidirectional map
-            array[index1][index2] = data[i]
-            array[index2][index1] = data[i]
+            array[index1][index2] = data[i][0]
+            array[index2][index1] = data[i][0]
 
-    with open('newDistanceMatrix.txt', 'w') as f:
-
-        array = list(array)
-
-        for item in array:
-            f.write("{}\n".format(item))
+    json.dump(array.tolist(), open('time_matrix.json', 'w'))
 
 
 changeMapping()
