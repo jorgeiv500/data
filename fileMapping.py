@@ -12,16 +12,12 @@ def createBuidlingIndex():
             data[i] = data[i].lower().strip()
         data = sorted(data)
 
-    with open("MapKeys", 'w') as f:
-        # save to file
-        for item in data:
-            f.write("{}\n".format(item))
+    json.dump(data, open('building_list.json', 'w'))
 
 
 def changeMapping():
-    with open("MapKeys") as f:
-        k = f.read().split("\n")
-    array = np.zeros((len(k)-1, len(k)-1), dtype=list)
+    k = json.load(open('building_list.json', 'r'))
+    array = np.zeros((len(k), len(k)), dtype=np.int32)
     with open('Distance_Matrix.json') as f:
         data = json.load(f)
         for i in data:
@@ -40,5 +36,6 @@ def changeMapping():
     json.dump(array.tolist(), open('time_matrix.json', 'w'))
 
 
+createBuidlingIndex()
 changeMapping()
 api_key = 'AIzaSyAB7V8GGSxwkvmMgYFGkFx0s3cCSM0YHC0'
