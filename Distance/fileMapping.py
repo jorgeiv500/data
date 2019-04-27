@@ -16,7 +16,7 @@ def createBuidlingIndex():
 
 
 def changeMapping():
-    k = json.load(open('building_list.json', 'r'))
+    k = json.load(open('Building_Array.json', 'r'))
     array = np.zeros((len(k), len(k)), dtype=np.int32)
     with open('Distance_Matrix.json') as f:
         data = json.load(f)
