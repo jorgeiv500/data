@@ -26,7 +26,7 @@ def load_data(api_key, Building_Names, Building_MetaData):
     Read from the file Building_Names and use google api to get Building Meta Data
     :param api_key: the api key for google api
     :param Building_Names: the file to be read
-    :param Building_MetaData: Meta Data related to Google Distance Matrix API
+    :param Building_MetaData: Meta Data related to Google Geocoding API
     :return: void
     """
     with open(get_data_path(Building_Names)) as f:
